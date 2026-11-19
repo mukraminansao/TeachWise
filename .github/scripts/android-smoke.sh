@@ -26,6 +26,14 @@ screen() {
   ui | tr '>' '\n' | grep -e 'text="[^"]' -e 'content-desc="[^"]' \
     | sed -E 's/.*(text="[^"]*").*(content-desc="[^"]*").*(bounds="[^"]*").*/    \1 \2 \3/' | head -80
 }
+# Print the average colour of the screen (dark navy = the intro, light = the sign-in screen).
+look() {
+  adb exec-out screencap | python3 -c "
+import sys; d=sys.stdin.buffer.read(); w=int.from_bytes(d[0:4],'little'); h=int.from_bytes(d[4:8],'little'); px=d[16:]
+n=0; r=g=b=0
+for i in range(0, len(px)-3, 4*997): r+=px[i]; g+=px[i+1]; b+=px[i+2]; n+=1
+print('    screen colour (%s): rgb(%d,%d,%d)' % (sys.argv[1], r//n, g//n, b//n))" "$1"
+}
 # Close the on-screen keyboard (a swipe over it would type) and answer Android's notification prompt.
 calm() {
   adb shell dumpsys input_method | grep -q 'mInputShown=true' && adb shell input keyevent KEYCODE_BACK && sleep 1
@@ -56,7 +64,10 @@ for i in $(seq 1 45); do
   sleep 2
   [ "$i" = 3 ] && { shot first-screen; screen "first screen"; }
   alive || fail "the app closed on start"
-  tap "Skip intro" && { sleep 1; continue; }
+  if tap "Skip intro"; then
+    echo "tapped Skip intro"; look "just after Skip"; sleep 3; look "3 s after Skip"; screen "3 s after Skip"
+    continue
+  fi
   if ui | grep -q 'Sign in as the demo Student'; then
     shot sign-in
     tap "Sign in as the demo Student"
