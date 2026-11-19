@@ -43,5 +43,15 @@
   "devDependencies": {
     "@types/react": "~19.1.0",
     "typescript": "~5.9.2"
+  },
+  "overrides": {
+    "node-forge": "^1.4.3",
+    "postcss": "^8.5.33",
+    "undici": "^6.29.1",
+    "glob@^13": "^14.0.6",
+    "minimatch@^9 || ^10": "^11.0.9",
+    "xcode": {
+      "uuid": "^11.1.1"
+    }
   }
 }
