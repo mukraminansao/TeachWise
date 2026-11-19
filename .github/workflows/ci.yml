@@ -83,8 +83,9 @@ jobs:
             -H 'Content-Type: application/json' -H 'Accept: application/json' \
             -d '{"current_password":"password","password":"Hijacked-99","password_confirmation":"Hijacked-99"}')
           test "$CODE" = 403 && echo "demo password is protected"
-          JS=$(curl -fsS $B/ | grep -o '/_expo/static/js/web/[^"]*\.js' | head -1)
-          curl -fsS "$B$JS" | grep -q 'or try a demo account' && echo "web build has the demo buttons"
+          # Expo splits the web app into one file per screen: find the sign-in screen's file, then fetch it through Apache
+          JS=$(docker exec tw sh -c "grep -rl 'or try a demo account' /var/www/html/public/_expo/static/js/web/" | head -1 | sed 's#^/var/www/html/public##')
+          test -n "$JS" && curl -fsS "$B$JS" | grep -q 'or try a demo account' && echo "web build has the demo buttons"
       - name: Container log
         if: failure()
         run: |
