@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Pressable, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View, type TextInputInstance } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useQuery } from '@tanstack/react-query';
 import { api, ApiError } from '@/api/client';
@@ -78,10 +78,10 @@ export function SignUpWizard({ school, onSignIn }: { school: PublicSchool; onSig
   const [serverErrors, setServerErrors] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
 
-  const nameRef = useRef<TextInput>(null);
-  const userRef = useRef<TextInput>(null);
-  const pwRef = useRef<TextInput>(null);
-  const confirmRef = useRef<TextInput>(null);
+  const nameRef = useRef<TextInputInstance>(null);
+  const userRef = useRef<TextInputInstance>(null);
+  const pwRef = useRef<TextInputInstance>(null);
+  const confirmRef = useRef<TextInputInstance>(null);
 
   const touch = (k: string) => setTouched((t) => ({ ...t, [k]: true }));
   const bump = (...keys: string[]) => setShake((s) => Object.fromEntries([...Object.entries(s), ...keys.map((k) => [k, (s[k] ?? 0) + 1])]));

@@ -59,8 +59,8 @@ export function NotificationsSheet() {
             keyExtractor={(n) => String(n.id)}
             contentContainerStyle={{ gap: 10 }}
             initialNumToRender={10}
-            ListHeaderComponent={unread > 0 ? <Pressable accessibilityRole="button" disabled={markAll.isPending} onPress={() => markAll.mutate()} style={{ minHeight: 44, justifyContent: 'center', alignSelf: 'flex-start', marginBottom: 6 }}><Txt weight="semibold" size={14} color={colors.accent}>{markAll.isPending ? tr('Updating…', 'Ina-update…') : tr('Mark all as read', 'Markahang nabasa lahat')}</Txt></Pressable> : null}
-            ListFooterComponent={markAll.error ? <Txt accessibilityLiveRegion="polite" size={14} color={colors.danger}>{tr('Could not mark notifications as read. Try again.', 'Hindi mamarkahang nabasa. Subukan ulit.')}</Txt> : null}
+            ListHeaderComponent={unread > 0 ? <Pressable accessibilityRole="button" disabled={markAll.isPending} onPress={() => markAll.mutate()} style={{ minHeight: 44, justifyContent: 'center', alignSelf: 'flex-start', marginBottom: 6 }}><Txt weight="semibold" size={14} color={colors.accent}>{markAll.isPending ? tr('Updating…', 'Ina-update…') : tr('Mark all as read', 'Markahang nabasa lahat')}</Txt></Pressable> : undefined}
+            ListFooterComponent={markAll.error ? <Txt accessibilityLiveRegion="polite" size={14} color={colors.danger}>{tr('Could not mark notifications as read. Try again.', 'Hindi mamarkahang nabasa. Subukan ulit.')}</Txt> : undefined}
             ListEmptyComponent={
               <View style={{ alignItems: 'center', gap: 8, paddingVertical: 16 }}>
                 <WiseMascot size={120} mood="proud" />

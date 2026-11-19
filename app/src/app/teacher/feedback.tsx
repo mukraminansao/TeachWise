@@ -52,7 +52,7 @@ export default function FeedbackScreen() {
       onEndReachedThreshold={0.4}
       onEndReached={() => query.hasNextPage && !query.isFetchingNextPage && query.fetchNextPage()}
       contentContainerStyle={{ paddingHorizontal: wide ? 52 : space.lg, paddingTop: wide ? 40 : 22, paddingBottom: 40, gap: space.sm, width: '100%', maxWidth: 900, alignSelf: 'center' }}
-      refreshControl={<RefreshControl refreshing={query.isRefetching} onRefresh={() => query.refetch()} tintColor={colors.accent} />}
+      refreshControl={<RefreshControl refreshing={query.isRefetching} onRefresh={() => { void query.refetch(); }} tintColor={colors.accent} />}
       ListHeaderComponent={header}
       ListEmptyComponent={
         query.isLoading ? (
@@ -65,7 +65,7 @@ export default function FeedbackScreen() {
           )
         )
       }
-      ListFooterComponent={query.isFetchingNextPage ? <ActivityIndicator color={colors.accent} style={{ marginVertical: space.lg }} /> : null}
+      ListFooterComponent={query.isFetchingNextPage ? <ActivityIndicator color={colors.accent} style={{ marginVertical: space.lg }} /> : undefined}
       renderItem={({ item: c, index }) => (
         <FadeIn delay={Math.min(index, 8) * 40}>
           <CommentCard elevated comment={c.comment} rating={c.rating} meta={[c.subject_code, c.period, c.submitted_at && shortDate(c.submitted_at)].filter(Boolean).join(' · ')} />

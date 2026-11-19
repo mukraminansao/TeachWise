@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 import { tr } from '@/lib/i18n';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { homeFor, useAuth } from '@/auth/store';
 import { Button } from '@/components/Button';
 import { Logo } from '@/components/Logo';
@@ -12,9 +13,10 @@ import { colors } from '@/theme';
 export default function NotFound() {
   const router = useRouter();
   const user = useAuth((s) => s.user);
+  const insets = useSafeAreaInsets();
   return (
     <View style={{ flex: 1, backgroundColor: colors.frame, alignItems: 'center', justifyContent: 'center', padding: 24, gap: 18 }}>
-      <View style={{ position: 'absolute', top: 32, left: 32 }}>
+      <View style={{ position: 'absolute', top: 32 + insets.top, left: 32 }}>
         <Logo size={44} onDark />
       </View>
       <WiseMascot size={190} mood="think" />

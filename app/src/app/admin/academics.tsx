@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Pressable, ScrollView, TextInput, View } from 'react-native';
+import { Pressable, ScrollView, TextInput, View, type ScrollViewInstance } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { ApiError } from '@/api/client';
 import { useAdminDelete, useAdminList, useAdminSave, useDepartments, useImportClasses, type AdminUser, type DepartmentRow, type Offering, type Section, type Semester, type Subject } from '@/api/admin';
@@ -117,7 +117,7 @@ function Classes() {
 
 /** Bounded horizontal strip with mouse-friendly controls as well as touch scrolling. */
 function SectionFilters({ sections, selected, onSelect }: { sections: Section[]; selected: number | null; onSelect: (id: number | null) => void }) {
-  const scroll = useRef<ScrollView>(null);
+  const scroll = useRef<ScrollViewInstance>(null);
   const reduced = useReducedMotion();
   const [width, setWidth] = useState(0);
   const [contentWidth, setContentWidth] = useState(0);

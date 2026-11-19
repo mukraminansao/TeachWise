@@ -1,5 +1,5 @@
 import { forwardRef, useEffect, useRef, useState, type ReactNode } from 'react';
-import { ActivityIndicator, Animated, Platform, Pressable, TextInput, View, type TextInputProps } from 'react-native';
+import { ActivityIndicator, Animated, Platform, Pressable, TextInput, View, type TextInputProps, type TextInputInstance } from 'react-native';
 import { tr } from '@/lib/i18n';
 import { colors, fonts } from '@/theme';
 import { Icon, type IconName } from '../Icon';
@@ -37,7 +37,7 @@ export interface FieldProps extends Omit<TextInputProps, 'style'> {
  * The one text field used by every form in TeachWise.
  * Border and icon follow the state: navy while typing, green when valid, red when not.
  */
-export const Field = forwardRef<TextInput, FieldProps>(function Field(
+export const Field = forwardRef<TextInputInstance, FieldProps>(function Field(
   { label, icon, state = 'idle', message, hint, max, right, locked, shake = 0, children, onFocus, onBlur, value, ...input },
   ref
 ) {
@@ -127,7 +127,7 @@ export const Field = forwardRef<TextInput, FieldProps>(function Field(
 });
 
 /** Password field with show/hide and a Caps Lock warning (computers). */
-export const PasswordField = forwardRef<TextInput, Omit<FieldProps, 'icon' | 'right' | 'secureTextEntry'>>(function PasswordField(props, ref) {
+export const PasswordField = forwardRef<TextInputInstance, Omit<FieldProps, 'icon' | 'right' | 'secureTextEntry'>>(function PasswordField(props, ref) {
   const [show, setShow] = useState(false);
   const [caps, setCaps] = useState(false);
   const [focused, setFocused] = useState(false);

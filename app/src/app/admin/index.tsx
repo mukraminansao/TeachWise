@@ -43,7 +43,7 @@ export default function AdminHome() {
   return (
     <ScrollView
       {...scrollHide}
-      refreshControl={<RefreshControl refreshing={query.isRefetching} onRefresh={() => query.refetch()} tintColor={colors.accent} />}
+      refreshControl={<RefreshControl refreshing={query.isRefetching} onRefresh={() => { void query.refetch(); }} tintColor={colors.accent} />}
       contentContainerStyle={{ paddingHorizontal: phone ? space.lg : 32, paddingTop: phone ? 18 : 32, paddingBottom: phone ? 36 : 72, gap: phone ? space.lg : 24, width: '100%', maxWidth: 1440, alignSelf: 'center' }}
     >
       {phone ? <AppBar title={tr('Overview', 'Overview')} subtitle={d.semester?.name} /> : <PageHeader title={tr('Overview', 'Overview')} />}
