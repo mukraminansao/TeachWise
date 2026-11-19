@@ -20,7 +20,14 @@ tap() {
   adb shell input tap $(((x1 + x2) / 2)) $(((y1 + y2) / 2))
 }
 alive() { adb shell pidof "$PKG" >/dev/null; }
-fail() { echo "::error::$1"; shot failed; adb logcat -d > "$OUT/logcat.txt"; exit 1; }
+# Print the words on screen (text and accessibility labels) to the job log.
+screen() { echo "--- on screen ($1):"; ui | tr '>' '\n' | grep -o -e 'text="[^"]\+"' -e 'content-desc="[^"]\+"' | sed 's/^/    /' | head -40; }
+fail() {
+  echo "::error::$1"; shot failed; screen "when it failed"
+  adb logcat -d > "$OUT/logcat.txt"
+  echo "--- app log (errors and React Native):"; grep -E "ReactNativeJS|AndroidRuntime|FATAL" "$OUT/logcat.txt" | tail -30
+  exit 1
+}
 
 adb install -r "$APK" || fail "the APK did not install"
 adb logcat -c
@@ -30,6 +37,7 @@ adb shell am start -W -n "$PKG/.MainActivity" || fail "the app did not open"
 signed=0
 for i in $(seq 1 45); do
   sleep 2
+  [ "$i" = 3 ] && { shot first-screen; screen "first screen"; adb shell uiautomator dump /sdcard/ui.xml; }
   alive || fail "the app closed on start"
   tap "Skip intro" && { sleep 1; continue; }
   if ui | grep -q 'Sign in as the demo Student'; then
