@@ -21,7 +21,17 @@ tap() {
 }
 alive() { adb shell pidof "$PKG" >/dev/null; }
 # Print the words on screen (text and accessibility labels) to the job log.
-screen() { echo "--- on screen ($1):"; ui | tr '>' '\n' | grep -o -e 'text="[^"]\+"' -e 'content-desc="[^"]\+"' | sed 's/^/    /' | head -80; }
+screen() {
+  echo "--- on screen ($1), $(adb shell wm size | tr -d '\r'):"
+  ui | tr '>' '\n' | grep -e 'text="[^"]' -e 'content-desc="[^"]' \
+    | sed -E 's/.*(text="[^"]*").*(content-desc="[^"]*").*(bounds="[^"]*").*/    \1 \2 \3/' | head -80
+}
+# Scroll the page down by about half a screen.
+scroll_down() {
+  local w h
+  read -r w h <<<"$(adb shell wm size | grep -o '[0-9]\+x[0-9]\+' | tail -1 | tr 'x' ' ')"
+  adb shell input swipe $((w / 2)) $((h * 7 / 10)) $((w / 2)) $((h * 3 / 10)) 400
+}
 fail() {
   echo "::error::$1"; shot failed; screen "when it failed"
   adb logcat -d > "$OUT/logcat.txt"
@@ -46,7 +56,7 @@ for i in $(seq 1 45); do
     signed=1
     break
   fi
-  adb shell input swipe 540 1700 540 900 300   # the demo buttons are below the sign-in form
+  scroll_down   # the demo buttons are below the sign-in form
 done
 [ "$signed" = 1 ] || fail "the sign-in screen with the demo accounts never appeared"
 
@@ -64,7 +74,7 @@ screen "after signing in"
 [ "$ok" = 1 ] || fail "the student dashboard did not appear after signing in"
 
 # Scroll a little and make sure it is still running.
-adb shell input swipe 540 1600 540 700 300
+scroll_down
 sleep 3
 shot scrolled
 alive || fail "the app closed while scrolling"
