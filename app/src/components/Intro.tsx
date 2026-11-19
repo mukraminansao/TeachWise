@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { tr } from '@/lib/i18n';
 import { Animated, Easing, Platform, Pressable, useWindowDimensions, View } from 'react-native';
 import { useRouter, type Href } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '@/auth/store';
 import { getPref, setPref } from '@/lib/prefs';
 import { useReducedMotion } from '@/lib/useReducedMotion';
@@ -32,6 +33,8 @@ export function Intro() {
   const user = useAuth((s) => s.user);
   const reduced = useReducedMotion();
   const { width, height } = useWindowDimensions();
+  // The intro covers the whole screen, status bar included: keep its buttons clear of the status and navigation bars.
+  const insets = useSafeAreaInsets();
   const wide = width >= 768;
 
   const [visible, setVisible] = useState<boolean | null>(null);
@@ -178,7 +181,7 @@ export function Intro() {
         )}
 
         {/* step dots + buttons */}
-        <View style={{ position: 'absolute', bottom: wide ? 56 : 40, left: 24, right: 24, alignItems: 'center', gap: 18 }}>
+        <View style={{ position: 'absolute', bottom: (wide ? 56 : 40) + insets.bottom, left: 24, right: 24, alignItems: 'center', gap: 18 }}>
           {signedOut && step >= 0 && (
             <View style={{ flexDirection: 'row', gap: 8 }}>
               {steps().map((_, i) => (
@@ -207,7 +210,7 @@ export function Intro() {
               if (!useAuth.getState().user) router.replace('/login');
             });
           }}
-          style={{ position: 'absolute', top: 24, right: 24, height: 40, paddingHorizontal: 16, borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.12)', justifyContent: 'center' }}
+          style={{ position: 'absolute', top: 24 + insets.top, right: 24, height: 40, paddingHorizontal: 16, borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.12)', justifyContent: 'center' }}
         >
           <Txt weight="semibold" size={14} color="#FFFFFF">{tr('Skip', 'Laktawan')}</Txt>
         </Pressable>
