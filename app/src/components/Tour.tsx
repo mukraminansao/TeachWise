@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
 import { tr } from '@/lib/i18n';
-import { Platform, Pressable, useWindowDimensions, View } from 'react-native';
+import { Platform, Pressable, useWindowDimensions, View, type ViewInstance } from 'react-native';
 import { create } from 'zustand';
 import { setPref } from '@/lib/prefs';
 import { tap, useUI } from '@/lib/ui';
@@ -48,11 +48,11 @@ export const useTour = create<TourState>((set) => ({
 export const requestTour = () => useTour.getState().request();
 
 // Registered targets: id -> the View to measure.
-const targets = new Map<string, View>();
+const targets = new Map<string, ViewInstance>();
 
 /** Wrap a part of the screen the tour can point at. */
 export function TourTarget({ id, children, style }: { id: string; children: ReactNode; style?: object }) {
-  const ref = useCallback((v: View | null) => {
+  const ref = useCallback((v: ViewInstance | null) => {
     if (v) targets.set(id, v);
     else targets.delete(id);
   }, [id]);

@@ -32,7 +32,7 @@ export default function HistoryScreen() {
       initialNumToRender={12}
       windowSize={7}
       contentContainerStyle={{ paddingHorizontal: wide ? 28 : space.lg, paddingTop: wide ? 30 : 18, paddingBottom: 40, gap: 14, width: '100%', maxWidth: 1060, alignSelf: 'center' }}
-      refreshControl={<RefreshControl refreshing={query.isRefetching} onRefresh={() => query.refetch()} tintColor={colors.accent} />}
+      refreshControl={<RefreshControl refreshing={query.isRefetching} onRefresh={() => { void query.refetch(); }} tintColor={colors.accent} />}
       ListHeaderComponent={wide ? <PageHeader title={tr('History', 'Kasaysayan')} /> : <AppBar title={tr('History', 'Kasaysayan')} subtitle={tr('Your submitted evaluations', 'Mga naipasa mong evaluation')} />}
       ListEmptyComponent={<EmptyState mood="shy" title={tr('Nothing here yet', 'Wala pa rito')} message={tr('Your finished evaluations will show up here, so you can see what you’ve sent.', 'Lalabas dito ang mga natapos mong evaluation, para makita mo ang mga naipasa mo.')} />}
       renderItem={({ item: e, index }) => (

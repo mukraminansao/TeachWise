@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, TextInput, View, type ScrollViewInstance } from 'react-native';
 import { useRouter, type Href } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ApiError } from '@/api/client';
@@ -78,7 +78,7 @@ export function EvaluationFlow({
 
   // step 0..n-1 = rating questions, n = comments, n+1 = review
   const [step, setStep] = useState(0);
-  const scroll = useRef<ScrollView>(null);
+  const scroll = useRef<ScrollViewInstance>(null);
   useEffect(() => { scroll.current?.scrollTo({ y: 0, animated: false }); }, [step]);
   const [ratings, setRatings] = useState<Record<number, number>>({});
   const [texts, setTexts] = useState<Record<number, string>>({});

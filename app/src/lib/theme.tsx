@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react';
 import { Platform, useColorScheme, View } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from 'expo-router';
 import { colors, palettes } from '@/theme';
 import { create } from 'zustand';
 import { loadLang, useLang } from './i18n';

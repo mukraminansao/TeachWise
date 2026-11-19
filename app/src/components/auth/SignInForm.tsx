@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Pressable, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View, type TextInputInstance } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ApiError } from '@/api/client';
 import { homeFor, useAuth } from '@/auth/store';
@@ -31,7 +31,7 @@ export function SignInForm({ schoolId, onNeedSchool }: { schoolId?: number | nul
   const [shake, setShake] = useState(0);
   const [lockedFor, setLockedFor] = useState(0);
   const [forgot, setForgot] = useState(false);
-  const passwordRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInputInstance>(null);
 
   // Remember the last username on this device, so returning students only type their password.
   useEffect(() => {

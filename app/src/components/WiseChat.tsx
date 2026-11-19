@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type SetStateAction } from 'react';
 import { useIsMutating, useMutationState } from '@tanstack/react-query';
 import { tr } from '@/lib/i18n';
-import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, TextInput, View, useWindowDimensions, type ScrollViewInstance } from 'react-native';
 import { ApiError } from '@/api/client';
 import { useDeleteWiseConversation, useEarlierWiseMessages, useNewWiseConversation, useSendWise, useWise, type WiseSendInput } from '@/api/hooks';
 import { useAuth } from '@/auth/store';
@@ -52,7 +52,7 @@ export function WiseChat({ subtitle, placeholder, onClose, onBack }: Props) {
   const waiting = !!pendingMessage;
   const reduced = useReducedMotion();
   const { desktop } = useUiScale();
-  const scroll = useRef<ScrollView>(null);
+  const scroll = useRef<ScrollViewInstance>(null);
   const suppressScroll = useRef(false);
 
   const messages = wise.data?.messages ?? [];
